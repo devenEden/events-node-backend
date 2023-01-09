@@ -12,6 +12,8 @@ const {
   EmailUtil,
   emailForgotPasswordTemplate,
 } = require("../../utils");
+const fs = require("fs");
+const path = require("path");
 const appConfig = require("../../../config/appConfig");
 
 const http = new httpResponse();
@@ -317,6 +319,39 @@ class UserController {
       http.send(res);
     } catch (error) {
       http.setError(400, "Unable to change your password", {
+        message: error.message,
+      });
+      http.send(res);
+    }
+  }
+
+  async uploadUserAvatar(req, res) {
+    try {
+      const { user, file } = req;
+
+      if (!file) throw new Error("Please upload an image");
+
+      const avatar = path.join("./avatars", file.filename);
+
+      if (user.avatar) {
+        fs.unlink(path.join("./assets", user.avatar), (err) => {
+          if (err)
+            throw new Error(
+              "Sorry an internal server error occured while uploading your avatar"
+            );
+        });
+      }
+      const userAvatar = await UserService.updateUser(
+        { avatar },
+        { where: { id: user.id } }
+      );
+
+      http.setSuccess(200, "Successfully updated user avatar", {
+        userAvatar,
+      });
+      http.send(res);
+    } catch (error) {
+      http.setError(400, "Unable to update user avatar", {
         message: error.message,
       });
       http.send(res);
