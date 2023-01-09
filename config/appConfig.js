@@ -6,4 +6,6 @@ module.exports = Object.freeze({
   APP_NAME: process.env.APP_NAME,
   WEBHOOK_HASH: process.env.WEB_HOOK_HASH,
   LOGOS: "./assets/logos",
+  USER_AVATARS: "./assets/avatars",
+  EVENT_IMAGES: "./assets/events",
 });

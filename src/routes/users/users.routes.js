@@ -1,6 +1,7 @@
 const express = require("express");
 const UsersController = require("../../controllers/users/users.controller");
 const loginRequired = require("../../middleware/authRoute");
+const { avatarUploader } = require("../../middleware/userImageUpload");
 
 const usersRouter = express.Router();
 
@@ -11,7 +12,12 @@ usersRouter.get(
   loginRequired,
   controller.verifyUserToken
 );
-
+usersRouter.put(
+  "/avatar",
+  loginRequired,
+  avatarUploader.single("avatar"),
+  controller.uploadUserAvatar
+);
 usersRouter.post("/auth/register", controller.registerUser);
 usersRouter.post("/auth/verify-account/:token", controller.verifyUserAccount);
 usersRouter.post("/auth/forgot-password", controller.forgotPassword);

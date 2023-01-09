@@ -1,7 +1,14 @@
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  class User extends Model {}
+  class User extends Model {
+    static associate(models) {
+      this.user = models.User.hasMany(models.Events, {
+        foreignKey: "user_id",
+        as: "events",
+      });
+    }
+  }
 
   User.init(
     {
@@ -9,6 +16,9 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.BIGINT,
+      },
+      avatar: {
+        type: DataTypes.STRING,
       },
       username: {
         unique: {
