@@ -26,9 +26,6 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       username: {
-        unique: {
-          msg: "The username you entered already exists",
-        },
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -42,14 +39,6 @@ module.exports = (sequelize) => {
       },
       email: {
         type: DataTypes.STRING,
-        unique: {
-          msg: "The email you entered already exists",
-        },
-        validate: {
-          isEmail: {
-            msg: "Please enter a valid email",
-          },
-        },
       },
       email_verified: {
         type: DataTypes.BOOLEAN,
