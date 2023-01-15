@@ -4,6 +4,7 @@ const TicketsService = require("./tickets/tickets.service");
 const UserService = require("./Users/users.service");
 const StaffService = require("./staff/staff.service");
 const EventActivitiesService = require("./events/eventActivities.service");
+const ScanService = require("./scans/scans.service");
 
 module.exports = {
   UserService,
@@ -12,4 +13,5 @@ module.exports = {
   TicketsService,
   StaffService,
   EventActivitiesService,
+  ScanService,
 };

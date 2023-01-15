@@ -5,6 +5,7 @@ const ticketRouter = require("./tickets/tickets.routes");
 const usersRouter = require("./users/users.routes");
 const staffRouter = require("./staff/staff.routes");
 const eventActivitiesRouter = require("./events/eventActivities.routes");
+const scansRouter = require("./scan/scan.routes");
 const router = express.Router();
 
 /* GET home page. */
@@ -17,6 +18,7 @@ router.use(`${prefix}/users`, usersRouter);
 router.use(`${prefix}/events`, loginRequired, eventsRouter);
 router.use(`${prefix}/tickets`, loginRequired, ticketRouter);
 router.use(`${prefix}/staff`, loginRequired, staffRouter);
+router.use(`${prefix}/scan`, loginRequired, scansRouter);
 router.use(`${prefix}/event-activities`, loginRequired, eventActivitiesRouter);
 
 module.exports = router;

@@ -22,6 +22,11 @@ module.exports = (sequelize) => {
         foreignKey: "event_id",
         as: "tickets",
       });
+
+      this.scans = models.Events.hasMany(models.Scan, {
+        foreignKey: "event_id",
+        as: "event_scans",
+      });
     }
   }
 
