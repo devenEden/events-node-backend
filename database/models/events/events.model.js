@@ -12,6 +12,16 @@ module.exports = (sequelize) => {
         foreignKey: "event_id",
         as: "event_images",
       });
+
+      this.bookings = models.Events.hasMany(models.TicketBooking, {
+        foreignKey: "event_id",
+        as: "booked_tickets",
+      });
+
+      this.tickets = models.Events.hasMany(models.Ticket, {
+        foreignKey: "event_id",
+        as: "tickets",
+      });
     }
   }
 
