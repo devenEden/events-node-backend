@@ -4,6 +4,7 @@ const TicketController = require("./tickets/tickets.controller");
 const UserController = require("./users/users.controller");
 const StaffController = require("./staff/staff.controller");
 const EventActivitiesController = require("./events/eventActivities.controller");
+const ScanController = require("./scans/scans.controller");
 
 module.exports = {
   UserController,
@@ -12,4 +13,5 @@ module.exports = {
   TicketBookingController,
   StaffController,
   EventActivitiesController,
+  ScanController,
 };
