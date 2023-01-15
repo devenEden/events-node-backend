@@ -5,7 +5,6 @@ const generateQrCode = require("../../helpers/qrcode");
 const { TicketBookingsService } = require("../../services");
 const { EmailUtil, emailNotificationTemplate } = require("../../utils");
 const fs = require("fs");
-
 const http = new httpResponse();
 const ticketBookingService = new TicketBookingsService();
 const emailUtil = new EmailUtil();
@@ -17,7 +16,7 @@ class TicketBookingController {
 
       body.user_id = user.id;
 
-      const bookingExists = ticketBookingService.checkBookingExists(
+      const bookingExists = await ticketBookingService.checkBookingExists(
         body.event_id,
         user.id,
         body.ticket_id
@@ -38,13 +37,14 @@ class TicketBookingController {
       );
 
       const qrcode = generateQrCode(
-        `${appConfig.APP_CLIENT}/u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`
+        `${appConfig.APP_CLIENT}/events/u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`
       );
 
       const ticketPdf = generatePdf({
         ownerName: `${user.surname} ${user.other_names}`,
         ticketName: ticket.name,
         eventName: ticket.event?.title,
+        fileName: `u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`,
         qrcode,
         time: `From ${new Date(
           ticket?.event?.start_date
