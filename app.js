@@ -5,8 +5,10 @@ const logger = require("morgan");
 const createError = require("http-errors");
 const cors = require("cors");
 const indexRouter = require("./src/routes/");
+const { httpResponse } = require("./src/helpers");
 
 const app = express();
+const http = new httpResponse();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -35,7 +37,8 @@ app.use((err, req, res) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  http.setError(err.status, "Internal Server Error", { message: err.message });
+  http.send(res);
 });
 
 module.exports = app;
