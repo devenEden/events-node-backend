@@ -1,6 +1,7 @@
 const express = require("express");
 const loginRequired = require("../middleware/authRoute");
 const eventsRouter = require("./events/events.routes");
+const ticketRouter = require("./tickets/tickets.routes");
 const usersRouter = require("./users/users.routes");
 const staffRouter = require("./staff/staff.routes");
 const eventActivitiesRouter = require("./events/eventActivities.routes");
@@ -14,6 +15,7 @@ router.get("/", (req, res) => {
 });
 router.use(`${prefix}/users`, usersRouter);
 router.use(`${prefix}/events`, loginRequired, eventsRouter);
+router.use(`${prefix}/tickets`, loginRequired, ticketRouter);
 router.use(`${prefix}/staff`, loginRequired, staffRouter);
 router.use(`${prefix}/event-activities`, loginRequired, eventActivitiesRouter);
 

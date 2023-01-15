@@ -2,10 +2,25 @@ const models = require("../../../database/models");
 
 class EventsService {
   async findEvents() {
-    return await models.Events.findAll();
+    return await models.Events.findAll({
+      include: [
+        {
+          association: models.Events.eventImages,
+          attributes: ["file_path", "id"],
+        },
+      ],
+    });
   }
   async findMyEvents(userId) {
-    return await models.Events.findAll({ where: { user_id: userId } });
+    return await models.Events.findAll({
+      where: { user_id: userId },
+      include: [
+        {
+          association: models.Events.eventImages,
+          attributes: ["file_path", "id"],
+        },
+      ],
+    });
   }
   async findEventDetails(eventId) {
     return await models.Events.findAll({
@@ -15,6 +30,16 @@ class EventsService {
       include: [
         {
           association: models.Events.eventImages,
+        },
+        {
+          association: models.Events.tickets,
+        },
+        {
+          association: models.Events.bookings,
+          include: {
+            association: models.TicketBooking.user,
+            attributes: ["id", "surname", "other_names", "email", "contact"],
+          },
         },
         {
           association: models.Events.user,
