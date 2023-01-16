@@ -23,7 +23,7 @@ class EventsService {
     });
   }
   async findEventDetails(eventId) {
-    return await models.Events.findAll({
+    return await models.Events.findOne({
       where: {
         id: eventId,
       },
