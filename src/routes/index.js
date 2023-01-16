@@ -18,7 +18,7 @@ router.use(`${prefix}/users`, usersRouter);
 router.use(`${prefix}/events`, eventsRouter);
 router.use(`${prefix}/tickets`, loginRequired, ticketRouter);
 router.use(`${prefix}/staff`, loginRequired, staffRouter);
-router.use(`${prefix}/scan`, loginRequired, scansRouter);
+router.use(`${prefix}/scan`, scansRouter);
 router.use(`${prefix}/event-activities`, loginRequired, eventActivitiesRouter);
 
 module.exports = router;

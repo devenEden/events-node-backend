@@ -35,6 +35,9 @@ class EventsService {
           association: models.Events.tickets,
         },
         {
+          association: models.Events.activities,
+        },
+        {
           association: models.Events.bookings,
           include: {
             association: models.TicketBooking.user,

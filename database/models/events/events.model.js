@@ -27,6 +27,11 @@ module.exports = (sequelize) => {
         foreignKey: "event_id",
         as: "event_scans",
       });
+
+      this.activities = models.Events.hasMany(models.EventActivities, {
+        foreignKey: "event_id",
+        as: "activities",
+      });
     }
   }
 
