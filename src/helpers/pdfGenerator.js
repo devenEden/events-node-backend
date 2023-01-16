@@ -1,10 +1,17 @@
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const appConfig = require("../../config/appConfig");
+const winston = require("winston");
 
 const generatePdf = ({ eventName, ownerName, ticketName, time, qrcode }) => {
   if (!fs.existsSync(appConfig.ATTACHMENT))
     fs.mkdirSync(appConfig.ATTACHMENT, { recursive: true });
+
+  if (fs.existsSync(`${appConfig.ATTACHMENT}-ticket.pdf`)) {
+    fs.unlink(`${appConfig.ATTACHMENT}-ticket.pdf`, (err) => {
+      if (err) winston.error(err);
+    });
+  }
 
   const doc = new PDFDocument({
     layout: "landscape",
@@ -12,7 +19,11 @@ const generatePdf = ({ eventName, ownerName, ticketName, time, qrcode }) => {
     margins: { top: 0 },
   });
 
-  doc.pipe(fs.createWriteStream(`${appConfig.ATTACHMENT}-ticket.pdf`));
+  const writeStream = fs.createWriteStream(
+    `${appConfig.ATTACHMENT}-ticket.pdf`
+  );
+
+  doc.pipe(writeStream);
 
   doc.rect(0, 0, doc.page.width, doc.page.height).fill("#fff");
 
@@ -54,7 +65,7 @@ const generatePdf = ({ eventName, ownerName, ticketName, time, qrcode }) => {
 
   doc.end();
 
-  return `${appConfig.ATTACHMENT}-ticket.pdf`;
+  return { writeStream, path: `${appConfig.ATTACHMENT}-ticket.pdf` };
 };
 
 module.exports = generatePdf;

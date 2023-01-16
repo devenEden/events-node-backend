@@ -36,13 +36,15 @@ class TicketBookingController {
         body
       );
 
-      const qrcode = generateQrCode(
+      const qrcode = await generateQrCode(
         `${appConfig.APP_CLIENT}/events/u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`
       );
 
       const ticketPdf = generatePdf({
         ownerName: `${user.surname} ${user.other_names}`,
         ticketName: ticket.name,
+        ticket,
+        user,
         eventName: ticket.event?.title,
         fileName: `u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`,
         qrcode,
@@ -55,28 +57,30 @@ class TicketBookingController {
         ).toDateString()} ${new Date(ticket?.event?.end_date).toTimeString()}`,
       });
 
-      const attachmentFile = fs.readFileSync(ticketPdf).toString("base64");
+      ticketPdf.writeStream.on("finish", () => {
+        emailUtil.setAttachmentOptions(
+          fs
+            .readFileSync(`${appConfig.ATTACHMENT}-ticket.pdf`)
+            .toString("base64"),
+          `${user.surname} ${user.other_names} ${ticket?.event?.title} Ticket.pdf`
+        );
 
-      emailUtil.setAttachmentOptions(
-        attachmentFile,
-        `${user.surname} ${user.other_names} ${ticket?.event?.title} Ticket.pdf`
-      );
+        const attachment = emailUtil.getAttachmentOptions();
 
-      const attachment = emailUtil.getAttachmentOptions();
+        const emailMessage = emailNotificationTemplate(
+          appConfig.APP_NAME,
+          `${user.surname} ${user.other_names}`,
+          `You have successfully booked a ${ticket.name} ticket for the event ${ticket.event.title}`,
+          [attachment]
+        );
 
-      const emailMessage = emailNotificationTemplate(
-        appConfig.APP_NAME,
-        `${user.surname} ${user.other_names}`,
-        `You have successfully booked a ${ticket.name} ticket for the event ${ticket.event.title}`,
-        [attachment]
-      );
-
-      emailUtil.sendMessage(
-        user.email,
-        `${ticket.event.title} Ticket Booked`,
-        emailMessage,
-        [attachment]
-      );
+        emailUtil.sendMessage(
+          user.email,
+          `${ticket.event.title} Ticket Booked`,
+          emailMessage,
+          [attachment]
+        );
+      });
 
       http.setSuccess(200, "Successfully created ticket booking", {
         ...ticketBooking?.dataValues,
