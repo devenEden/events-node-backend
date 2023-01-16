@@ -37,7 +37,7 @@ class TicketBookingController {
       );
 
       const qrcode = await generateQrCode(
-        `${appConfig.APP_CLIENT}/events/u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`
+        `${appConfig.APP_CLIENT}/scan/u-${user.id}_t-${ticket.id}_tb-${ticketBooking.id}_e-${ticket.event.id}`
       );
 
       const ticketPdf = generatePdf({
