@@ -110,7 +110,7 @@ class UserController {
 
       const emailMessage = emailRegistrationTemplate(
         appConfig.APP_NAME,
-        `${appConfig.APP_CLIENT}/confirm-account/${token}`,
+        `${appConfig.APP_CLIENT}/auth/confirm-account/${token}`,
         `${data.surname} ${data.other_names}`,
         otp,
         password,
