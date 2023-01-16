@@ -10,6 +10,10 @@ class TicketBookingsService {
           attributes: ["id", "title"],
         },
         {
+          association: models.TicketBooking.ticket,
+          attributes: ["id", "name"],
+        },
+        {
           association: models.TicketBooking.user,
           attributes: ["id", "surname", "other_names", "email", "contact"],
         },
