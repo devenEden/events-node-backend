@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
   res.json("Events App Server!");
 });
 router.use(`${prefix}/users`, usersRouter);
-router.use(`${prefix}/events`, loginRequired, eventsRouter);
+router.use(`${prefix}/events`, eventsRouter);
 router.use(`${prefix}/tickets`, loginRequired, ticketRouter);
 router.use(`${prefix}/staff`, loginRequired, staffRouter);
 router.use(`${prefix}/scan`, loginRequired, scansRouter);
